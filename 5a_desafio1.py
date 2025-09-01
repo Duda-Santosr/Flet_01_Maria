@@ -45,7 +45,7 @@ def main(page: ft.Page):
         
         try:
             idade = int(campo_idade.value)
-            if idade < 1 or idade >120:
+            if idade < 1 or idade > 120:
                 mostrar_erro("Idade deve estar entre 1 e 120 anos")
                 return
         except ValueError:
@@ -100,46 +100,47 @@ def main(page: ft.Page):
         cartao_perfil.visible = True
         page.update()
 
-        def limpar_campos(evento):
-            """Limpa todos os campos"""
-            campo_nome.value = ""
-            campo_idade.value = ""
-            dropdown_hobby.value = None
-            cartao_perfil.visible = False
-            page.update()
+    def limpar_campos(evento):
+        campo_nome.value = ""
+        campo_idade.value = ""
+        dropdown_hobby.value = None
+        cartao_perfil.visible = False
+        page.update()
 
-        # Botões
-        linha_botoes = ft.Row([
-            ft.ElevatedButton(
-                "✨ Criar Perfil",
-                on_click=criar_perfil,
-                bgcolor=ft.Colors.BLUE,
-                color=ft.Colors.WHITE,
-                width=140
-            ),
-            ft.ElevatedButton(
-                "🧹 Limpar",
-                on_click=limpar_campos,
-                bgcolor=ft.Colors.GREY,
-                color=ft.Colors.WHITE,
-                width=140
-            )
-        ], alignment=ft.MainAxisAlignmente.CENTER, spacing=20)
+    # Botões
+    linha_botoes = ft.Row([
+        ft.ElevatedButton(
+            "✨ Criar Perfil",
+            on_click=criar_perfil,
+            bgcolor=ft.Colors.BLUE,
+            color=ft.Colors.WHITE,
+            width=140
+        ),
+        ft.ElevatedButton(
+            "🧹 Limpar",
+            on_click=limpar_campos,
+            bgcolor=ft.Colors.GREY,
+            color=ft.Colors.WHITE,
+            width=140
+        )
+    ], alignment=ft.MainAxisAlignment.CENTER, spacing=20)
 
-        # Layout principal
-        layout_principal = ft.Column([
-            ft.Text("👤 Criador de Perfil", size=26, weight=ft.FontWeight.BOLD),
-            ft.Text("Preencha seus dados para criar seu perfil personalizado!",
-                    size=14, color=ft.Colors.GREY_600, text_align=ft.TextAlign.CENTER),
-            ft.Container(height=20),
-            campo_nome,
-            campo_idade,
-            dropdown_hobby,
-            linha_botoes,
-            ft.Container(height=20),
-            cartao_perfil
-        ], horizontal_alignment=ft.CrossAxisAlignment.CENTER, spacing=15)
+    # Layout principal
+    layout_principal = ft.Column([
+        ft.Text("👤 Criador de Perfil", size=26, weight=ft.FontWeight.BOLD),
+        ft.Text(
+            "Preencha seus dados para criar seu perfil personalizado!",
+            size=14, color=ft.Colors.GREY_600, text_align=ft.TextAlign.CENTER
+        ),
+        ft.Container(height=20),
+        campo_nome,
+        campo_idade,
+        dropdown_hobby,
+        linha_botoes,
+        ft.Container(height=20),
+        cartao_perfil
+    ], horizontal_alignment=ft.CrossAxisAlignment.CENTER, spacing=15)
 
-        page.add(layout_principal)
+    page.add(layout_principal)
 
 ft.app(target=main)
