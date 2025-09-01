@@ -26,11 +26,11 @@ def main(page: ft.Page):
         """Atualiza display e cor baseado no valor"""
         display_contador.value = str(valor_contador)
 
-        if valor_contador > 0 : 
+        if valor_contador > 0: 
             display_contador.color = ft.Colors.GREEN
             info_contador.value = "Valor positivo"
         elif valor_contador < 0:
-            display_ontador.color = ft.Colors.RED
+            display_contador.color = ft.Colors.RED  # corrigido aqui
             info_contador.value = "Valor negativo"
         else: 
             display_contador.color = ft.Colors.BLUE
@@ -62,13 +62,16 @@ def main(page: ft.Page):
                 info_contador,
                 ft.Row(
                     controls=[
-                        ft.ElevatedButton("➖", on_click=decrementar, width =80, height=80, bgcolor=ft.Colors.RED_400, color=ft.Colors.WHITE),
-                        ft.ElevatedButton("➕", on_click=resetar, width=120, bgcolor=ft.Colors. BLUE_400, color=ft.Colors.WHITE)
+                        ft.ElevatedButton("➖", on_click=decrementar, width=80, height=80,
+                                          bgcolor=ft.Colors.RED_400, color=ft.Colors.WHITE),
+                        ft.ElevatedButton("➕", on_click=incrementar, width=80, height=80,  # corrigido
+                                          bgcolor=ft.Colors.GREEN_400, color=ft.Colors.WHITE)
                     ],
                     alignment=ft.MainAxisAlignment.CENTER,
                     spacing=40
                 ),
-                ft.ElevatedButton("🔄️ Reset", on_click=resetar, width=120, bgcolor=ft.Colors. BLUE_400, color=ft.Colors.WHITE)
+                ft.ElevatedButton("🔄 Reset", on_click=resetar, width=120,
+                                  bgcolor=ft.Colors.BLUE_400, color=ft.Colors.WHITE)  # corrigido
             ],
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             spacing=20
