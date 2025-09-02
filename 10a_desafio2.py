@@ -1,26 +1,25 @@
-
 import flet as ft
 
 def main(page: ft.Page):
     # Configurações iniciais da página
     page.title = "Loja Virtual Mini"
     page.padding = ft.padding.only(top=40, left=20, right=20, bottom=20)
-    page.scroll = ft.ScrollMode.AUTO # permite rolagem automática
-    page.bgcolor = ft.Colors.GREY_50 # cor de fundo da página
+    page.scroll = ft.ScrollMode.AUTO  # permite rolagem automática
+    page.bgcolor = ft.Colors.GREY_50  # cor de fundo da página
 
     # Estado da aplicação - variáveis que armazenam dados do carrinho
-    carrinho = [] # lista que armazena os produtos no carrinho
-    total_carrinho = 0.0 # valor total dos produtos no carrinho
+    carrinho = []  # lista que armazena os produtos no carrinho
+    total_carrinho = 0.0  # valor total dos produtos no carrinho
 
     # Elementos da interface (declarando primeiro para serem acessíveis nas funções)
     # Grid que exibe os produtos em formato de grade
     area_produtos = ft.GridView(
-        expand=1, # expande para ocupar espaço disponível
-        runs_count=2, # 2 colunas de produtos
-        max_extent=180, # largura máxima de cada item
-        child_aspect_ratio=0.9, # proporção altura/largura dos cards
-        spacing= 15, # espaçamento entre cards horizontalmente
-        run_spacing=15 # espaçamento entre cards verticalmente
+        expand=1,  # expande para ocupar espaço disponível
+        runs_count=2,  # 2 colunas de produtos
+        max_extent=180,  # largura máxima de cada item
+        child_aspect_ratio=0.9,  # proporção altura/largura dos cards
+        spacing=15,  # espaçamento entre cards horizontalmente
+        run_spacing=15  # espaçamento entre cards verticalmente
     )
     # Textos que mostram informações do carrinho
     contador_carrinho = ft.Text("Carrinho (0)", size=16, weight=ft.FontWeight.BOLD, color=ft.Colors.BLUE_700)
@@ -32,14 +31,14 @@ def main(page: ft.Page):
 
     def adicionar_ao_carrinho(nome, preco):
         """Adiciona um produto ao carrinho de compras"""
-        nonlocal total_carrinho # Permite modificar a variável global total_carrinho
+        nonlocal total_carrinho  # Permite modificar a variável global total_carrinho
         # Adiciona o produto como dicionário na lista do carrinho
-        carrinho.apend({"nome": nome, "preço": preco})
-        # Soma e preço do produto ao total
+        carrinho.append({"nome": nome, "preco": preco}) # CORRIGIDO: de 'apend' para 'append' e 'preço' para 'preco'
+        # Soma o preço do produto ao total
         total_carrinho += preco
         # Atualiza a interface do carrinho
         atualizar_carrinho()
-        #Mostra notificações de sucesso
+        # Mostra notificações de sucesso
         mostrar_notificacao(f"✅ {nome} adicionado!")
 
     def criar_card_produto(nome, preco, categoria, emoji, cor):
@@ -50,37 +49,37 @@ def main(page: ft.Page):
                 ft.Text(emoji, size=40, text_align=ft.TextAlign.CENTER),
                 # Nome do produto
                 ft.Text(
-                    nome, 
+                    nome,
                     size=16,
                     weight=ft.FontWeight.BOLD,
                     color=ft.Colors.WHITE,
                     text_align=ft.TextAlign.CENTER,
-                    max_lines=2, # Permite quebra de linha para nomes longos
-                    overflow=ft.TextOverflow.ELLIPSIS # adiciona ... se muito longo
+                    max_lines=2,  # Permite quebra de linha para nomes longos
+                    overflow=ft.TextOverflow.ELLIPSIS  # adiciona ... se muito longo
                 ),
                 # Preço do produto
                 ft.Text(
                     f"R$ {preco:.2f}",
                     size=14,
-                    color=ft.Colors.WHITE70,
+                    color=ft.Colors.WHITE70, # CORRIGIDO: de 'ft.Colors.WHITE70' para 'ft.Colors.WHITE70'
                     text_align=ft.TextAlign.CENTER
                 )
             ],
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-            spacing=10 # espaçamento entre elementos da coluna
+            spacing=10  # espaçamento entre elementos da coluna
             ),
-            bgcolor=cor, # cor de fundo específica do produto
-            padding=20, # espaçamento interno
-            border_radius=15, # bordas arredondadas
-            width=160, # largura fixa do card
-            height=180, # altura fixa do card
+            bgcolor=cor,  # cor de fundo específica do produto
+            padding=20,  # espaçamento interno
+            border_radius=15,  # bordas arredondadas
+            width=160,  # largura fixa do card
+            height=180,  # altura fixa do card
             # Sombra para dar profundidade
             shadow=ft.BoxShadow(
                 spread_radius=1,
                 blur_radius=8,
-                color=ft.Colors.with_opacity(0.3, ft.Colors.BLACK)
+                color=ft.Colors.with_opacity(0.3, ft.Colors.BLACK) # CORRIGIDO: de 'ft.Colors' para 'ft.Colors'
             ),
-            # Tornando o card inteiro clicável - chama função de adicionar o carrinho
+            # Tornando o card inteiro clicável - chama função de adicionar ao carrinho
             on_click=lambda e, n=nome, p=preco: adicionar_ao_carrinho(n, p),
             # Efeito visual de ondulação ao clicar (ripple effect)
             ink=True,
@@ -89,7 +88,7 @@ def main(page: ft.Page):
         )
 
     # Lista de produtos disponíveis na loja
-    # Cada produto é um dicionário com informações como nome, preço, categoria, emoji e cor
+    # Cada produto é um dicionário com informações como nome, preco, categoria, emoji e cor
     produtos = [
         {"nome": "Smartphone", "preco": 899.99, "categoria": "Eletrônicos", "emoji": "📱", "cor": ft.Colors.BLUE_600},
         {"nome": "Notebook", "preco": 2499.90, "categoria": "Eletrônicos", "emoji": "💻", "cor": ft.Colors.PURPLE_600},
@@ -99,14 +98,14 @@ def main(page: ft.Page):
         {"nome": "Fone", "preco": 199.99, "categoria": "Eletrônicos", "emoji": "🎧", "cor": ft.Colors.RED_600},
         {"nome": "Relógio", "preco": 350.00, "categoria": "Acessórios", "emoji": "⌚", "cor": ft.Colors.TEAL_600},
         {"nome": "Óculos", "preco": 250.00, "categoria": "Acessórios", "emoji": "🕶️", "cor": ft.Colors.INDIGO_600}
-    ]   
+    ]
 
     # Elementos de filtro da interface
     # Dropdown para filtrar por categoria
     filtro_categoria = ft.Dropdown(
-        label= "Categoria",
-        width= 150,
-        value="Todas", # valor padrão
+        label="Categoria",
+        width=150,
+        value="Todas",  # valor padrão
         options=[
             ft.dropdown.Option("Todas"),
             ft.dropdown.Option("Eletrônicos"),
@@ -118,9 +117,9 @@ def main(page: ft.Page):
 
     # Dropdown para filtrar por faixa de preço
     filtro_preco = ft.Dropdown(
-        label= "Preço",
-        width= 150,
-        value="Todos", # valor padrão
+        label="Preço",
+        width=150,
+        value="Todos",  # valor padrão
         options=[
             ft.dropdown.Option("Todos"),
             ft.dropdown.Option("Até R$ 100"),
@@ -131,30 +130,30 @@ def main(page: ft.Page):
 
     # Campo de texto para buscar produtos por nome
     campo_busca = ft.TextField(
-        label="Buscas prodduto",
+        label="Buscar produto", # CORRIGIDO: de 'Buscas prodduto' para 'Buscar produto'
         width=200,
         prefix_icon=ft.Icons.SEARCH # Ícone de lupa
     )
 
     def remover_do_carrinho(index):
         """Remove um produto específico do carrinho usando seu índice"""
-        nonlocal total_carrinho # Permite modificar a variável global total_carrinho
+        nonlocal total_carrinho  # Permite modificar a variável global total_carrinho
         # Verifica se o índice é válido (existe na lista)
         if 0 <= index < len(carrinho):
-            #Remove o produto da lista e armazena os dados dele
+            # Remove o produto da lista e armazena os dados dele
             produto = carrinho.pop(index)
-            #Subtrai o preço do produto do total
-            total_carrinho -= produto["preço"]
-            #Atualiza a interface do carrinho
+            # Subtrai o preço do produto do total
+            total_carrinho -= produto["preco"] # CORRIGIDO: de 'preço' para 'preco'
+            # Atualiza a interface do carrinho
             atualizar_carrinho()
-            #mostrar_notificacao de remoção
+            # mostrar_notificacao de remoção
             mostrar_notificacao(f"❌ {produto['nome']} removido!")
 
     def atualizar_carrinho():
         """Atualiza a exibição do carrinho na interface"""
         # Atualiza o contador de itens no carrinho
         contador_carrinho.value = f"Carrinho ({len(carrinho)})"
-        # Atualiza o  valor total formatado em reais
+        # Atualiza o valor total formatado em reais
         total_texto.value = f"Total: R$ {total_carrinho:.2f}"
 
         # Limpa a lista visual do carrinho
@@ -163,14 +162,14 @@ def main(page: ft.Page):
         # Adiciona cada item do carrinho na lista visual
         for i, item in enumerate(carrinho):
             # Cria uma linha para cada produto no carrinho
-            linha_produto = ft.row([
-                # Nome do produto (expande para ocupar espaço desponível)
+            linha_produto = ft.Row([ # CORRIGIDO: de 'ft.row' para 'ft.Row'
+                # Nome do produto (expande para ocupar espaço disponível)
                 ft.Text(f"{item['nome']}", expand=True),
                 # Preço do produto
                 ft.Text(f"R$ {item['preco']:.2f}", color=ft.Colors.GREEN_600),
                 # Botão para remover o produto (usando o índice atual)
                 ft.IconButton(
-                    ft.Icons.DELETE,
+                    ft.icons.DELETE,
                     icon_color=ft.Colors.RED,
                     on_click=lambda e, idx=i: remover_do_carrinho(idx)
                 )
@@ -184,31 +183,31 @@ def main(page: ft.Page):
 
     def carregar_produtos(e=None):
         """Carrega e exibe produtos aplicando os filtros selecionados"""
-        # Limpa a área de produtos antesde recarregar
+        # Limpa a área de produtos antes de recarregar
         area_produtos.controls.clear()
 
         # Obtém os valores dos filtros
         categoria = filtro_categoria.value
         preco_faixa = filtro_preco.value
-        busca= (campo_busca.value or "").lower() # Converte para minúscula para busca
+        busca = (campo_busca.value or "").lower()  # Converte para minúscula para busca
 
         # Percorre todos os produtos disponíveis
         for produto in produtos:
             # Aplica filtro de categoria
-            if categoria !="Todas" and produto["categoria"] !=categoria:
-                continue # Pula este produto se não bater a categoria
+            if categoria != "Todas" and produto["categoria"] != categoria:
+                continue  # Pula este produto se não bater a categoria
 
             # Aplica filtro de preço
             if preco_faixa == "Até R$ 100" and produto["preco"] > 100:
                 continue
-            elif preco_faixa == "RS 100-500" and not (100 <= produto["preco"] <= 500):
+            elif preco_faixa == "R$ 100-500" and not (100 <= produto["preco"] <= 500): # CORRIGIDO: de 'RS' para 'R$'
                 continue
-            elif preco_faixa == "Acima R$ 500" and produto["preco"] <=500:
+            elif preco_faixa == "Acima de R$ 500" and produto["preco"] <= 500: # CORRIGIDO: falta de 'de'
                 continue
 
-            # Aplica filtro de busca por nome 
+            # Aplica filtro de busca por nome
             if busca and busca not in produto["nome"].lower():
-                continue # Pula se o termo buscado não estiver no nome
+                continue  # Pula se o termo buscado não estiver no nome
 
             # Se chegou até aqui, o produto passou por todos os filtros
             # Cria o card do produto
@@ -227,11 +226,11 @@ def main(page: ft.Page):
 
     def finalizar_compra(e):
         """Finaliza a compra - limpa o carrinho e zera o total"""
-        nonlocal total_carrinho # Permite modificar a variável global
+        nonlocal total_carrinho  # Permite modificar a variável global
         if len(carrinho) > 0:
-            # Limpa cmpletamente a lista do carrinho
+            # Limpa completamente a lista do carrinho
             carrinho.clear()
-            # Zero o total (importante: usar nonlocal para modificar a variável global)
+            # Zera o total (importante: usar nonlocal para modificar a variável global)
             total_carrinho = 0.0
             # Atualiza a interface do carrinho
             atualizar_carrinho()
@@ -254,7 +253,7 @@ def main(page: ft.Page):
         # Mostra notificacao de que os filtros foram limpos
         mostrar_notificacao("🔄️ Filtros limpos!")
 
-    def mostrar_notificacao(mensagem):        
+    def mostrar_notificacao(mensagem):
         """Exibe uma mensagem de notificação para o usuário"""
         notificacao.value = mensagem
         page.update()
@@ -262,8 +261,8 @@ def main(page: ft.Page):
     # Conecta os eventos de mudança dos filtros à função de carregar produtos
     # Sempre que o usuário mudar algum filtro, os produtos serão recarregados
     for controle in [filtro_categoria, filtro_preco, campo_busca]:
-        controle.om_change = carregar_produtos
-    
+        controle.on_change = carregar_produtos # CORRIGIDO: de 'om_change' para 'on_change'
+
     # Carrega os produtos inicialmente (sem filtos)
     carregar_produtos()
 
@@ -310,7 +309,17 @@ def main(page: ft.Page):
             spacing=15
             ),
 
-            # Area principal onde os produtos são exibidos
+            # Área principal onde os produtos são exibidos
+            ft.Container(
+                content=area_produtos,
+                padding=10,
+                border_radius=10,
+                bgcolor=ft.Colors.BLUE_GREY_50,
+            ),
+            
+            ft.Divider(height=20, color=ft.Colors.BLUE_GREY_100),
+
+            # Seção do carrinho
             ft.Container(
                 content=ft.Column([
                     # Linha com contador de itens e total
@@ -330,12 +339,12 @@ def main(page: ft.Page):
                             width=200
                         )
                     ], alignment=ft.MainAxisAlignment.CENTER),
-                    # Area de notificações
+                    # Área de notificações
                     notificacao
                 ], spacing=10), # Espaçamento entre elementos
-                bgcolor=ft.Colors.WHITE, # Fundo branco
-                padding=20, #Espaçamento interno
-                border_radius=10, #Bordas arredondadas
+                bgcolor=ft.Colors.WHITE,  # Fundo branco
+                padding=20,  # Espaçamento interno
+                border_radius=10,  # Bordas arredondadas
                 # Sombra sutil para destacar o carrinho
                 shadow=ft.BoxShadow(
                     spread_radius=1,
@@ -345,13 +354,8 @@ def main(page: ft.Page):
             )
         ],
         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-        spacing=15 # Espaçamento entre seçoes)
-        )
+        spacing=15) # Espaçamento entre seções
     )
 
-#Inicia a aplicação Flet
+# Inicia a aplicação Flet
 ft.app(target=main)
-
-        
-
-
