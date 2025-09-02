@@ -2,56 +2,85 @@ import flet as ft
 
 def main(page: ft.Page):
     page.title = "Campo de Texto"
-    page.padding = ft.padding.only(top=40, left=20, right=20, bottom=20) # padding superior para área segura
+    page.bgcolor = ft.Colors.GREY_100
+    page.horizontal_alignment = "center"
+    page.vertical_alignment = "center"
 
-    # Criando um campo onde o usuário pode digitar
-    campo_nome = ft.TextField(
-        label="Digite seu nome aqui", # texto de orientação
-        width=300, # largura do campo
-        border_color=ft.Colors.BLUE # cor da borda
-    )
-
-    # Texto que mostrará a resposta
+    # Texto de resposta (inicialmente vazio)
     resposta = ft.Text(
-        value="", # inicialmente vazio
+        value="",
         size=18,
-        text_align=ft.TextAlign.CENTER
+        text_align=ft.TextAlign.CENTER,
+        weight=ft.FontWeight.W_500,
     )
 
-    def processar_nome(evento):
-        """
-        Função que pega o texto digitado pelo usuário e faz algo com ele.
-        """
-        # Pegando o valor digitado no campo
-        nome_digitado = campo_nome.value
+    # Campo de entrada
+    campo_nome = ft.TextField(
+        label="Digite seu nome",
+        width=300,
+        border_color=ft.Colors.DEEP_PURPLE_200,
+        focused_border_color=ft.Colors.DEEP_PURPLE_500,
+        cursor_color=ft.Colors.DEEP_PURPLE,
+        prefix_icon=ft.Icons.PERSON,
+    )
 
-        # Verificando se o usuário realmente digitou algo
-        if nome_digitado == "" or nome_digitado is None:
+    # Função do botão
+    def processar_nome(evento):
+        nome_digitado = campo_nome.value.strip()
+
+        if not nome_digitado:
             resposta.value = "⚠️ Por favor, digite seu nome!"
             resposta.color = ft.Colors.RED
         elif len(nome_digitado) < 2:
-            resposta.value = "⚠️ Nome muito curto!"  
+            resposta.value = "⚠️ Nome muito curto!"
             resposta.color = ft.Colors.ORANGE
         else:
-            resposta.value = f"✅ Olá, {nome_digitado}! Prazer em conhecê-lo(a)"   
-            resposta.color = ft.Colors.GREEN
+            resposta.value = f"✨ Olá, {nome_digitado}! Bem-vindo(a)!"
+            resposta.color = ft.Colors.DEEP_PURPLE_700
+        page.update()
 
-        # Atualizando a interface 
-        page.update()     
-
-    # Botão para processar o nome
-    botao_ok = ft.ElevatedButton(
+    # Botão estilizado
+    botao_ok = ft.FilledButton(
         text="Confirmar",
+        icon=ft.Icons.CHECK_CIRCLE,
         on_click=processar_nome,
-        width=150
+        width=200,
+        style=ft.ButtonStyle(
+            shape=ft.RoundedRectangleBorder(radius=30),
+            bgcolor=ft.Colors.DEEP_PURPLE_400,
+            color=ft.Colors.WHITE,
+            elevation=6,
+        ),
     )
 
-    # Adicionando elementos à página
-    page.add(
-        ft.Text("Vamos nos conhecer!☺️", size=22, weight=ft.FontWeight.BOLD),
-        campo_nome,
-        botao_ok,
-        resposta
+    # Card que agrupa os elementos
+    card = ft.Card(
+        content=ft.Container(
+            content=ft.Column(
+                [
+                    ft.Text(
+                        "👋 Seja bem-vindo!",
+                        size=24,
+                        weight=ft.FontWeight.BOLD,
+                        text_align=ft.TextAlign.CENTER,
+                        color=ft.Colors.DEEP_PURPLE_700,
+                    ),
+                    campo_nome,
+                    botao_ok,
+                    resposta,
+                ],
+                alignment="center",
+                horizontal_alignment="center",
+                spacing=20,
+            ),
+            padding=30,
+            border_radius=20,
+            bgcolor=ft.Colors.WHITE,
+        ),
+        elevation=8,
     )
 
-ft.app(target=main)    
+    page.add(card)
+
+
+ft.app(target=main)

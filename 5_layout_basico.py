@@ -1,71 +1,86 @@
 import flet as ft
 
 def main(page: ft.Page):
-    page.title = "Layouts Básicos"
-    page.title = 20
+    page.title = "Dashboard Compacto"
+    page.bgcolor = ft.Colors.GREY_200
+    page.padding = 20
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
 
-    # Vamos criar um layout organizado usando Column (vertical) e Row (horizontal)
-
-    # Título principal
-    titulo = ft.Text(
-        "Organizando Elementos na Tela 📐",
-        size=24,
-        weight=ft.FontWeight.BOLD,
-        text_align=ft.TextAlign.CENTER
+    # Cabeçalho compacto
+    cabecalho = ft.Container(
+        content=ft.Text(
+            "📊 Dashboard",
+            size=18,
+            weight=ft.FontWeight.BOLD,
+            color=ft.Colors.BLACK87,
+        ),
+        alignment=ft.alignment.center,
+        padding=8,
+        bgcolor=ft.Colors.WHITE,
+        border_radius=8,
+        width=250,
     )
 
-    # Criando uma linha hotizontal com 3 botões
+    # Mensagem
+    mensagem = ft.Text("", size=14, color=ft.Colors.BLUE_700)
+
+    # Função de clique
+    def mostrar_mensagem(e):
+        mensagem.value = f"Você clicou em: {e.control.text}"
+        page.update()
+
+    # Função para criar botões padronizados
+    def criar_botao(texto, icone, cor):
+        return ft.FilledButton(
+            texto,
+            icon=icone,
+            width=160,
+            height=60,
+            bgcolor=cor,
+            color=ft.Colors.WHITE,
+            on_click=mostrar_mensagem,
+            style=ft.ButtonStyle(
+                shape=ft.RoundedRectangleBorder(radius=4)  # cantos menos arredondados
+            )
+        )
+
+    # Botões principais (ações rápidas)
     linha_botoes = ft.Row(
         controls=[
-            ft.ElevatedButton("Botão 1", bgcolor=ft.Colors.BLUE, color=ft.Colors.WHITE),
-            ft.ElevatedButton("Botão 2", bgcolor=ft.Colors.GREEN, color=ft.Colors.WHITE),
-            ft.ElevatedButton("Botão 3", bgcolor=ft.Colors.RED, color=ft.Colors.WHITE),
+            criar_botao("Adicionar", ft.Icons.ADD, ft.Colors.GREEN_600),
+            criar_botao("Editar", ft.Icons.EDIT, ft.Colors.AMBER_600),
+            criar_botao("Excluir", ft.Icons.DELETE, ft.Colors.RED_600),
         ],
-        alignment=ft.MainAxisAlignment.CENTER, # Centralizar os botões
-        spacing=20 # Espaço entre os botões
+        alignment=ft.MainAxisAlignment.CENTER,
+        spacing=10,
     )
 
-    # Criando algumas caixas coloridas em coluna
-    caixa1 = ft.Container(
-        content=ft.Text("Caixa 1", color=ft.Colors.WHITE),
-        bgcolor=ft.Colors.PURPLE,
-        width=200,
-        height=50,
-        alignment=ft.alignment.center,
-        border_radius=5
+    # Botões do resumo agora também com ícones
+    linha_resumo = ft.Row(
+        controls=[
+            criar_botao("Usuários (1.250)", ft.Icons.PEOPLE, ft.Colors.DEEP_PURPLE),
+            criar_botao("Pedidos (320)", ft.Icons.SHOPPING_CART, ft.Colors.ORANGE),
+            criar_botao("Vendas (R$ 45K)", ft.Icons.ATTACH_MONEY, ft.Colors.TEAL),
+        ],
+        alignment=ft.MainAxisAlignment.CENTER,
+        spacing=10,
+        wrap=True
     )
 
-    caixa2 = ft.Container(
-        content=ft.Text("Caixa 2", color=ft.Colors.WHITE),
-        bgcolor=ft.Colors.ORANGE,
-        width=200,
-        height=50,
-        alignment=ft.alignment.center,
-        border_radius=5
-    )
-
-    #Organizando as caixas em uma coluna
-    coluna_caixas = ft.Column(
-        controls=[caixa1, caixa2],
-        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-        spacing=15 # Espaço entre as caixas
-    )
-
-    # Layout principal: organizando tudo verticalmente
+    # Layout principal
     layout_principal = ft.Column(
         controls=[
-            titulo,
-            ft.Text("Linha horizontal de botões:", size=16),
+            cabecalho,
+            ft.Text("Ações rápidas:", size=16, weight=ft.FontWeight.W_500, color=ft.Colors.BLACK87),
             linha_botoes,
-            ft.Text("Coluna de caixas:", size=16),
-            coluna_caixas,
-            ft.Text("Layout organizado! 🎉", size=14, color=ft.Colors.GREEN)
+            mensagem,
+            ft.Text("Resumo:", size=16, weight=ft.FontWeight.W_500, color=ft.Colors.BLACK87),
+            linha_resumo,
         ],
+        spacing=15,
         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-        spacing=25 # Espaço entre cada seção
     )
 
-    # Adicionando tudo à página
     page.add(layout_principal)
 
 ft.app(target=main)

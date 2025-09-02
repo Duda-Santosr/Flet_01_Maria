@@ -2,40 +2,54 @@ import flet as ft
 
 def main(page: ft.Page):
     page.title = "Meu Primeiro Botão"
-    page.padding = 20
+    page.padding = 30
+    page.bgcolor = ft.Colors.BLUE_50
+    page.horizontal_alignment = "center"
+    page.vertical_alignment = "center"
 
     # Criando um texto que será modificado pelo botão
     mensagem = ft.Text(
-        value="Clique no botão abaixo!👇",
-        size=20,
-        text_align=ft.TextAlign.CENTER
+        value="Clique no botão abaixo! 👇🏽",
+        size=24,
+        weight=ft.FontWeight.BOLD,
+        text_align=ft.TextAlign.CENTER,
+        color=ft.Colors.BLUE_900,
     )
 
     def botao_clicado(evento):
         """
-        Esta função será executada sempre que o botão for clicado.
-        O parâmetro 'evento' contém informações sobre o clique.
+        Função executada ao clicar no botão.
         """
-        # Mudando o texto da mensagem
         mensagem.value = "🎉 Parabéns! Você clicou no botão!"
-        mensagem.color = ft.Colors.GREEN
-
-        # IMPORATANTE: Sempre que modificamos elementos da interface,
-        # precisamos chamar page.update() para que as mudanças apareçam na tela
+        mensagem.color = ft.Colors.GREEN_700
         page.update()
 
-    # Criando nosso botão
+    # Criando nosso botão estilizado
     meu_botao = ft.ElevatedButton(
-        text="Clique em mim!", # texto que aparece no botão
-        on_click=botao_clicado, # função que será executada no clique
-        width=200, # largura do botão
-        height=50, # altura do botão
-        bgcolor=ft.Colors.BLUE, # cor de fundo
-        color=ft.Colors.WHITE # cor do texto
+        text="Clique em mim!",
+        on_click=botao_clicado,
+        width=220,
+        height=55,
+        bgcolor=ft.Colors.BLUE_600,
+        color=ft.Colors.WHITE,
+        style=ft.ButtonStyle(
+            shape=ft.RoundedRectangleBorder(radius=15),
+            elevation=5,
+        )
+    )
+
+    # Layout centralizado com espaçamento
+    conteudo = ft.Column(
+        [
+            mensagem,
+            meu_botao
+        ],
+        alignment="center",
+        horizontal_alignment="center",
+        spacing=20
     )
 
     # Adicionando os elementos à página
-    page.add(mensagem)
-    page.add(meu_botao)
+    page.add(conteudo)
 
-ft.app(target=main)    
+ft.app(target=main)

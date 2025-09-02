@@ -1,3 +1,4 @@
+
 import flet as ft
 
 def main(page: ft.Page):
@@ -54,8 +55,8 @@ def main(page: ft.Page):
                     weight=ft.FontWeight.BOLD,
                     color=ft.Colors.WHITE,
                     text_align=ft.TextAlign.CENTER,
-                    max_line=2, # Permite quebra de linha para nomes longos
-                    overflow=ft.TextOverFlow.ELLIPSIS # adiciona ... se muito longo
+                    max_lines=2, # Permite quebra de linha para nomes longos
+                    overflow=ft.TextOverflow.ELLIPSIS # adiciona ... se muito longo
                 ),
                 # Preço do produto
                 ft.Text(
@@ -84,7 +85,7 @@ def main(page: ft.Page):
             # Efeito visual de ondulação ao clicar (ripple effect)
             ink=True,
             # Animação suave para transições
-            animate=ft.animation.Animation(300, ft.AnimationCurve.EASE_OUT)
+            animate=ft.Animation(300, ft.AnimationCurve.EASE_OUT)
         )
 
     # Lista de produtos disponíveis na loja
@@ -229,14 +230,14 @@ def main(page: ft.Page):
         nonlocal total_carrinho # Permite modificar a variável global
         if len(carrinho) > 0:
             # Limpa cmpletamente a lista do carrinho
-             carrinho.clear()
+            carrinho.clear()
             # Zero o total (importante: usar nonlocal para modificar a variável global)
             total_carrinho = 0.0
             # Atualiza a interface do carrinho
             atualizar_carrinho()
             # Mostra mensagem de sucesso
             mostrar_notificacao(f"🎉 Compra finalizada! Obrigado!")
-         else:
+        else:
             # Mostra aviso se carrinho estiver vazio
             mostrar_notificacao("⚠️ Carrinho vazio!")
 
@@ -262,5 +263,95 @@ def main(page: ft.Page):
     # Sempre que o usuário mudar algum filtro, os produtos serão recarregados
     for controle in [filtro_categoria, filtro_preco, campo_busca]:
         controle.om_change = carregar_produtos
+    
+    # Carrega os produtos inicialmente (sem filtos)
+    carregar_produtos()
+
+    # Construção da interface do usuario
+    page.add(
+        ft.Column([
+            # Cabeçalho da loja
+            ft.Text(
+                "🛍️ Loja Virtual Mini",
+                size=28,
+                weight=ft.FontWeight.BOLD,
+                color=ft.Colors.BLUE_800,
+                text_align=ft.TextAlign.CENTER
+            ),
+            ft.Text(
+                "Encontre os melhores produtos!",
+                size=14,
+                color=ft.Colors.GREY_600,
+                text_align=ft.TextAlign.CENTER
+            ),
+
+            # Seção de filtros
+            # Primeira linha: filtros de categoria e preço
+            ft.Row(
+                [filtro_categoria, filtro_preco],
+                alignment=ft.MainAxisAlignment.CENTER,
+                spacing=20
+            ),
+            # Segunda linha: campo de busca e botão limpar filtro
+            ft.Row([
+                campo_busca,
+                ft.ElevatedButton(
+                    "🔄️ Limpar Filtros",
+                    on_click=limpar_filtros,
+                    bgcolor=ft.Colors.ORANGE_400,
+                    color=ft.Colors.WHITE,
+                    height=40,
+                    style=ft.ButtonStyle(
+                        text_style=ft.TextStyle(size=12, weight=ft.FontWeight.BOLD)
+                    )
+                )
+            ],
+            alignment=ft.MainAxisAlignment.CENTER,
+            spacing=15
+            ),
+
+            # Area principal onde os produtos são exibidos
+            ft.Container(
+                content=ft.Column([
+                    # Linha com contador de itens e total
+                    ft.Row(
+                        [contador_carrinho, total_texto],
+                        alignment=ft.MainAxisAlignment.SPACE_BETWEEN
+                    ),
+                    # Lista dos itens no carrinho
+                    lista_carrinho,
+                    # Botão para finalizar compra
+                    ft.Row([
+                        ft.ElevatedButton(
+                            "🛒 Finalizar Compra",
+                            on_click=finalizar_compra,
+                            bgcolor=ft.Colors.GREEN,
+                            color=ft.Colors.WHITE,
+                            width=200
+                        )
+                    ], alignment=ft.MainAxisAlignment.CENTER),
+                    # Area de notificações
+                    notificacao
+                ], spacing=10), # Espaçamento entre elementos
+                bgcolor=ft.Colors.WHITE, # Fundo branco
+                padding=20, #Espaçamento interno
+                border_radius=10, #Bordas arredondadas
+                # Sombra sutil para destacar o carrinho
+                shadow=ft.BoxShadow(
+                    spread_radius=1,
+                    blur_radius=3,
+                    color=ft.Colors.with_opacity(0.1, ft.Colors.BLACK)
+                )
+            )
+        ],
+        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        spacing=15 # Espaçamento entre seçoes)
+        )
+    )
+
+#Inicia a aplicação Flet
+ft.app(target=main)
 
         
+
+
