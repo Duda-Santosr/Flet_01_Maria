@@ -39,7 +39,7 @@ def main(page: ft.Page):
         # Atualiza a interface do carrinho
         atualizar_carrinho()
         #Mostra notificações de sucesso
-        mostra_notificacao(f"✅ {nome} adicionado!")
+        mostrar_notificacao(f"✅ {nome} adicionado!")
 
     def criar_card_produto(nome, preco, categoria, emoji, cor):
         """Cria um card de produto reutilizável que funciona como botão"""
@@ -197,8 +197,16 @@ def main(page: ft.Page):
             if categoria !="Todas" and produto["categoria"] !=categoria:
                 continue # Pula este produto se não bater a categoria
 
+            # Aplica filtro de preço
+            if preco_faixa == "Até R$ 100" and produto["preco"] > 100:
+                continue
+            elif preco_faixa == "RS 100-500" and not (100 <= produto["preco"] <= 500):
+                continue
+            elif preco_faixa == "Acima R$ 500" and produto["preco"] <=500:
+                continue
+
             # Aplica filtro de busca por nome 
-            if busca and busca not it produto["nome"].lower():
+            if busca and busca not in produto["nome"].lower():
                 continue # Pula se o termo buscado não estiver no nome
 
             # Se chegou até aqui, o produto passou por todos os filtros
@@ -207,8 +215,8 @@ def main(page: ft.Page):
                 produto["nome"],
                 produto["preco"],
                 produto["categoria"],
-                produto[emoji],
-                produto[cor]
+                produto["emoji"],
+                produto["cor"]
             )
             # Adiciona o card à área de produtos
             area_produtos.controls.append(card)
@@ -216,37 +224,39 @@ def main(page: ft.Page):
         # Atualiza a página para mostrar os produtos filtrados
         page.update()
 
-    def finalizar_comprar(e):
-    """Finaliza a compra - limpa o carrinho e zera o total"""
-    nonlocal total_carrinho # Perite modificar a variável global
-    if len(carrinho) > 0:
-        # Limpa cmpletamente a lista do carrinho
-        carrinho.clear()
-        # Zero o total (importante: usar nonlocal para modificar a variável global)
-        total_carrinho = 0.0
-        # Atualiza a interface do carrinho
-        atualizar_carrinho()
-        # Mostra mensagem de sucesso
-        mostrar_notificacao(f"🎉 Compra finalizada! Obrigado!")
-    else:
-        # Mostra aviso se carrinho estiver vazio
-        mostrar_notificacao("⚠️ Carrinho vazio!")
+    def finalizar_compra(e):
+        """Finaliza a compra - limpa o carrinho e zera o total"""
+        nonlocal total_carrinho # Permite modificar a variável global
+        if len(carrinho) > 0:
+            # Limpa cmpletamente a lista do carrinho
+             carrinho.clear()
+            # Zero o total (importante: usar nonlocal para modificar a variável global)
+            total_carrinho = 0.0
+            # Atualiza a interface do carrinho
+            atualizar_carrinho()
+            # Mostra mensagem de sucesso
+            mostrar_notificacao(f"🎉 Compra finalizada! Obrigado!")
+         else:
+            # Mostra aviso se carrinho estiver vazio
+            mostrar_notificacao("⚠️ Carrinho vazio!")
 
-def limpar_filtros(e):
-    """Limpa todos os filtros e redefine para valores padrão"""
-    # Redefine todos os filtros para seus valores iniciais
-    filtro_categoria.value = "Todas"
-    filtro_preco.value = "Todos"
-    campo_busca.value = ""
+    def limpar_filtros(e):
+        """Limpa todos os filtros e redefine para valores padrão"""
+        # Redefine todos os filtros para seus valores iniciais
+        filtro_categoria.value = "Todas"
+        filtro_preco.value = "Todos"
+        campo_busca.value = ""
 
-    # Recarrega os produtos sem filtros
-    carregar_produtos()
+        # Recarrega os produtos sem filtros
+        carregar_produtos()
 
-    # Mostra notificacao de que os filtros foram limpos
-    mostrar_notificacao(mensagem):
-    """Exibe uma mensagem de notificação para o usuário"""
-    notificacao.value = mensagem
-    page.update()
+        # Mostra notificacao de que os filtros foram limpos
+        mostrar_notificacao("🔄️ Filtros limpos!")
+
+    def mostrar_notificacao(mensagem):        
+        """Exibe uma mensagem de notificação para o usuário"""
+        notificacao.value = mensagem
+        page.update()
 
     # Conecta os eventos de mudança dos filtros à função de carregar produtos
     # Sempre que o usuário mudar algum filtro, os produtos serão recarregados
