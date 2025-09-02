@@ -86,7 +86,8 @@ def main(page: ft.Page):
                     ft.ElevatedButton("🧹 Limpar", on_click=limpar_filtros, bgcolor=ft.Colors.DEEP_PURPLE_400, color=ft.Colors.WHITE, style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=10)))
                 ], alignment=ft.MainAxisAlignment.CENTER, spacing=20),
                 contador,
-                ft.Container(content=area_cards, height=450, bgcolor=ft.Colors.WHITE, border_radius=15, padding=15, shadow=ft.BoxShadow(spread_radius=1, blur_radius=10, color=ft.Colors.with_opacity(0.2, ft.Colors.BLACK)))
+                ft.Container(content=area_cards, height=500, bgcolor=ft.Colors.WHITE, border_radius=15, padding=8
+                , shadow=ft.BoxShadow(spread_radius=1, blur_radius=10, color=ft.Colors.with_opacity(0.2, ft.Colors.BLACK)))
             ],
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             spacing=20
